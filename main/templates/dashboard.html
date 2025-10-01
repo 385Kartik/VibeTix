@@ -1,48 +1,723 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block title %}Welcome to VibeTix{% endblock %}
+
 {% block start %}
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Event Dashboard</h2>
-        <a href="{% url 'create_event' %}" class="btn btn-primary">Create New Event</a>
+<!-- Animated Background -->
+<div class="animated-background">
+    <div class="spotlight spotlight-1"></div>
+    <div class="spotlight spotlight-2"></div>
+    <div class="spotlight spotlight-3"></div>
+    <div class="confetti-container">
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
     </div>
-
-    <div class="row">
-        {% for event in events %}
-        <div class="col-md-6 col-lg-4">
-            <div class="card h-100 border-0 rounded-3 shadow-sm hover-shadow-lg transition-shadow">
-                {% if event.image %}
-                <div class="card-img-wrapper position-relative">
-                    <img src="{{ event.image.url }}" class="card-img-top rounded-top" alt="{{ event.name }}" style="height: 200px; object-fit: cover;">
-                    <div class="card-img-overlay d-flex align-items-start justify-content-end">
-                        <span class="badge {% if event.status == 'published' %}bg-success{% else %}bg-warning{% endif %}">
-                            {{ event.status }}
-                        </span>
-                    </div>
-                </div>
-                {% endif %}
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title fw-bold mb-3">{{ event.name }}</h5>
-                    <p class="card-text flex-grow-1">{{ event.description|truncatewords:20 }}</p>
-                    <div class="mt-auto">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="h5 mb-0">₹{{ event.price }}</span>
-                            <small class="text-muted">{{ event.available_tickets }}/{{ event.total_tickets }} tickets left</small>
-                        </div>
-                        <div class="d-grid gap-2">
-                           
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-
-        <div class="col-12">
-            <div class="alert alert-info">
-                No events created yet. Click "Create New Event" to get started!
-            </div>
-        </div>
-        {% endfor %}
+    <div class="stage-lights">
+        <div class="light-beam beam-1"></div>
+        <div class="light-beam beam-2"></div>
+        <div class="light-beam beam-3"></div>
     </div>
 </div>
+
+<!-- Hero Section -->
+<div class="hero-section position-relative mb-5">
+    <div class="hero-overlay"></div>
+    <div class="container py-5 position-relative">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4 text-gradient">Experience Live Entertainment Like Never Before</h1>
+                <p class="lead mb-4 text-white">Discover and book tickets for concerts, festivals, theater shows, and live events. Your gateway to unforgettable experiences.</p>
+                {% if not request.user.is_authenticated %}
+                    <div class="d-flex gap-3">
+                        <a href="{% url 'login' %}" class="btn btn-glow btn-lg px-4">Find Events</a>
+                        <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg px-4">Join VibeTix</a>
+                    </div>
+                {% else %}
+                    <a href="/main/" class="btn btn-glow btn-lg px-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ticket-perforated me-2" viewBox="0 0 16 16">
+                            <path d="M4 4.85v.9h1v-.9H4Zm7 0v.9h1v-.9h-1Zm-7 1.8v.9h1v-.9H4Zm7 0v.9h1v-.9h-1Zm-7 1.8v.9h1v-.9H4Zm7 0v.9h1v-.9h-1Zm-7 1.8v.9h1v-.9H4Zm7 0v.9h1v-.9h-1Z"/>
+                            <path d="M1.5 3A1.5 1.5 0 0 0 0 4.5V6a.5.5 0 0 0 .5.5 1.5 1.5 0 1 1 0 3 .5.5 0 0 0-.5.5v1.5A1.5 1.5 0 0 0 1.5 13h13a1.5 1.5 0 0 0 1.5-1.5V10a.5.5 0 0 0-.5-.5 1.5 1.5 0 0 1 0-3A.5.5 0 0 0 16 6V4.5A1.5 1.5 0 0 0 14.5 3h-13ZM1 4.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1.05a2.5 2.5 0 0 0 0 4.9v1.05a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1.05a2.5 2.5 0 0 0 0-4.9V4.5Z"/>
+                        </svg>
+                        Browse Events
+                    </a>
+                {% endif %}
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="hero-visual">
+                    <div class="floating-ticket ticket-1">
+                        <div class="ticket-content">
+                            <div class="ticket-header">
+                                <span class="ticket-type">VIP</span>
+                                <span class="ticket-price">$99</span>
+                            </div>
+                            <div class="ticket-event">Rock Concert</div>
+                            <div class="ticket-date">Dec 25, 2025</div>
+                            <div class="ticket-barcode"></div>
+                        </div>
+                    </div>
+                    <div class="floating-ticket ticket-2">
+                        <div class="ticket-content">
+                            <div class="ticket-header">
+                                <span class="ticket-type">GENERAL</span>
+                                <span class="ticket-price">$49</span>
+                            </div>
+                            <div class="ticket-event">Music Festival</div>
+                            <div class="ticket-date">Jan 15, 2026</div>
+                            <div class="ticket-barcode"></div>
+                        </div>
+                    </div>
+                    <div class="floating-ticket ticket-3">
+                        <div class="ticket-content">
+                            <div class="ticket-header">
+                                <span class="ticket-type">PREMIUM</span>
+                                <span class="ticket-price">$75</span>
+                            </div>
+                            <div class="ticket-event">Theater Show</div>
+                            <div class="ticket-date">Feb 10, 2026</div>
+                            <div class="ticket-barcode"></div>
+                        </div>
+                    </div>
+                    <div class="center-glow"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container mb-5 m-50">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="card-body text-center p-4">
+                    <div class="icon-circle mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16">
+                            <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                        </svg>
+                    </div>
+                    <h3 class="h5 mb-3">Exclusive Events</h3>
+                    <p class="text-muted">Get access to premier events and exclusive pre-sales before anyone else.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="card-body text-center p-4">
+                    <div class="icon-circle mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-lightning" viewBox="0 0 16 16">
+                            <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1H6.374z"/>
+                        </svg>
+                    </div>
+                    <h3 class="h5 mb-3">Instant Confirmation</h3>
+                    <p class="text-muted">Secure your tickets instantly with our real-time booking system and digital delivery.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="card-body text-center p-4">
+                    <div class="icon-circle mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-shield-check" viewBox="0 0 16 16">
+                            <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
+                            <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="h5 mb-3">Secure Booking</h3>
+                    <p class="text-muted">100% secure payments and guaranteed authentic tickets for your peace of mind.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="container mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <h2 class="fw-bold mb-4 text-gradient">Don't Miss Out on Amazing Events</h2>
+            {% if not request.user.is_authenticated %}
+                <a href="{% url 'register' %}" class="btn btn-glow btn-lg px-4">Join VibeTix Today</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+/* Modern Color Scheme - Dark Theme */
+:root {
+    --primary-color: #8b5cf6;
+    --secondary-color: #7c3aed;
+    --accent-color: #6d28d9;
+    --dark-bg: #0f172a;
+    --dark-card: #1e293b;
+    --light-text: #e2e8f0;
+    --muted-text: #94a3b8;
+    --glow-color: rgba(139, 92, 246, 0.5);
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: var(--light-text);
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Animated Entertainment Background */
+.animated-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Concert Spotlights */
+.spotlight {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+    animation: spotlight-move 8s ease-in-out infinite;
+}
+
+.spotlight-1 {
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, transparent 70%);
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.spotlight-2 {
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%);
+    top: 60%;
+    right: 15%;
+    animation-delay: 2s;
+}
+
+.spotlight-3 {
+    background: radial-gradient(circle, rgba(109, 40, 217, 0.4) 0%, transparent 70%);
+    bottom: 10%;
+    left: 50%;
+    animation-delay: 4s;
+}
+
+@keyframes spotlight-move {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    33% {
+        transform: translate(50px, -30px) scale(1.1);
+    }
+    66% {
+        transform: translate(-30px, 50px) scale(0.9);
+    }
+}
+
+/* Stage Light Beams */
+.stage-lights {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.light-beam {
+    position: absolute;
+    top: -50%;
+    width: 2px;
+    height: 150%;
+    background: linear-gradient(to bottom, 
+        rgba(139, 92, 246, 0) 0%,
+        rgba(139, 92, 246, 0.3) 20%,
+        rgba(139, 92, 246, 0.1) 50%,
+        rgba(139, 92, 246, 0) 100%);
+    animation: beam-sweep 12s ease-in-out infinite;
+    transform-origin: top center;
+}
+
+.beam-1 {
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.beam-2 {
+    left: 50%;
+    animation-delay: 4s;
+}
+
+.beam-3 {
+    left: 80%;
+    animation-delay: 8s;
+}
+
+@keyframes beam-sweep {
+    0%, 100% {
+        transform: rotate(-15deg);
+        opacity: 0.2;
+    }
+    50% {
+        transform: rotate(15deg);
+        opacity: 0.4;
+    }
+}
+
+/* Confetti Animation */
+.confetti-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.confetti {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: -10%;
+    animation: confetti-fall 15s linear infinite;
+}
+
+.confetti:nth-child(1) { left: 10%; background: #8b5cf6; animation-delay: 0s; }
+.confetti:nth-child(2) { left: 20%; background: #a855f7; animation-delay: 2s; }
+.confetti:nth-child(3) { left: 30%; background: #7c3aed; animation-delay: 4s; }
+.confetti:nth-child(4) { left: 40%; background: #6d28d9; animation-delay: 1s; }
+.confetti:nth-child(5) { left: 50%; background: #8b5cf6; animation-delay: 3s; }
+.confetti:nth-child(6) { left: 60%; background: #a855f7; animation-delay: 5s; }
+.confetti:nth-child(7) { left: 70%; background: #7c3aed; animation-delay: 2.5s; }
+.confetti:nth-child(8) { left: 80%; background: #6d28d9; animation-delay: 4.5s; }
+.confetti:nth-child(9) { left: 90%; background: #8b5cf6; animation-delay: 1.5s; }
+.confetti:nth-child(10) { left: 95%; background: #a855f7; animation-delay: 3.5s; }
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(120vh) rotate(360deg);
+        opacity: 0.3;
+    }
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #1e1b4b, #3730a3);
+    position: relative;
+    overflow: hidden;
+    padding: 120px 0;
+    border-radius: 0 0 3rem 3rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.3;
+}
+
+/* Text Gradient */
+.text-gradient {
+    background: linear-gradient(to right, #fff, #c4b5fd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Feature Cards */
+.feature-card {
+    background: var(--dark-card);
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #8b5cf6, #6d28d9);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.feature-card:hover::before {
+    transform: scaleX(1);
+}
+
+/* Icon Circle */
+.icon-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(139, 92, 246, 0.1);
+    border: 2px solid rgba(139, 92, 246, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    transition: all 0.4s ease;
+}
+
+.icon-circle svg {
+    color: var(--primary-color);
+    transition: all 0.4s ease;
+}
+
+.feature-card:hover .icon-circle {
+    background: var(--primary-color);
+    transform: scale(1.1);
+    border-color: var(--primary-color);
+}
+
+.feature-card:hover .icon-circle svg {
+    color: white;
+    transform: scale(1.1) rotate(360deg);
+}
+
+/* Enhanced Glowing Button */
+.btn-glow {
+    background: linear-gradient(45deg, #8b5cf6, #6d28d9);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    padding: 15px 30px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.4s ease;
+}
+
+.btn-glow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(45deg, #8b5cf6, #6d28d9, #8b5cf6);
+    transition: all 0.6s ease;
+    z-index: -1;
+    transform: translateX(-50%);
+}
+
+.btn-glow::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #8b5cf6, #6d28d9, #8b5cf6);
+    border-radius: 100px;
+    z-index: -2;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.btn-glow:hover {
+    transform: translateY(-3px) scale(1.02);
+    color: white;
+    box-shadow: 0 0 30px var(--glow-color);
+}
+
+.btn-glow:hover::before {
+    transform: translateX(0);
+}
+
+.btn-glow:hover::after {
+    opacity: 1;
+}
+
+/* Outline Button Enhancement */
+.btn-outline-light {
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 100px;
+    padding: 15px 30px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+/* Text Colors */
+.text-muted {
+    color: var(--muted-text) !important;
+}
+
+/* Ensure content is above background */
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Custom Scrollbar - Dark Theme */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 6px;
+    border: 3px solid var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 80px 0;
+    }
+
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .lead {
+        font-size: 1.1rem;
+    }
+
+    .btn-glow, .btn-outline-light {
+        padding: 12px 24px;
+    }
+
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+    }
+
+    .icon-circle svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .spotlight {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+/* Ticket Icon Animation */
+.bi-ticket-perforated {
+    animation: ticket-wave 2s ease-in-out infinite;
+}
+
+@keyframes ticket-wave {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-3deg);
+    }
+    75% {
+        transform: rotate(3deg);
+    }
+}
+
+/* Hero Visual - Floating Tickets */
+.hero-visual {
+    position: relative;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.center-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+.floating-ticket {
+    position: absolute;
+    width: 280px;
+    height: 140px;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(139, 92, 246, 0.3);
+    animation: float 6s ease-in-out infinite;
+    transition: all 0.3s ease;
+}
+
+.floating-ticket:hover {
+    transform: scale(1.05) translateY(-10px) !important;
+    box-shadow: 0 15px 50px rgba(139, 92, 246, 0.4);
+    border-color: rgba(139, 92, 246, 0.6);
+}
+
+.ticket-1 {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.ticket-2 {
+    top: 40%;
+    right: 5%;
+    animation-delay: 2s;
+}
+
+.ticket-3 {
+    bottom: 15%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(-2deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(2deg);
+    }
+}
+
+.ticket-content {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ticket-type {
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.ticket-price {
+    color: #8b5cf6;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.ticket-event {
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 10px 0 5px 0;
+}
+
+.ticket-date {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.ticket-barcode {
+    height: 30px;
+    background: linear-gradient(90deg, 
+        #fff 0px, #fff 2px, transparent 2px, transparent 4px,
+        #fff 4px, #fff 5px, transparent 5px, transparent 8px,
+        #fff 8px, #fff 10px, transparent 10px, transparent 12px,
+        #fff 12px, #fff 13px, transparent 13px, transparent 16px,
+        #fff 16px, #fff 19px, transparent 19px, transparent 20px,
+        #fff 20px, #fff 21px, transparent 21px, transparent 24px,
+        #fff 24px, #fff 27px, transparent 27px, transparent 28px,
+        #fff 28px, #fff 29px, transparent 29px, transparent 32px,
+        #fff 32px, #fff 35px, transparent 35px, transparent 36px,
+        #fff 36px, #fff 37px, transparent 37px, transparent 40px
+    );
+    background-size: 40px 100%;
+    background-repeat: repeat-x;
+    opacity: 0.3;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+/* Responsive adjustments for hero visual */
+@media (max-width: 1200px) {
+    .floating-ticket {
+        width: 240px;
+        height: 120px;
+        padding: 15px;
+    }
+    
+    .ticket-event {
+        font-size: 1.1rem;
+    }
+    
+    .ticket-price {
+        font-size: 1.25rem;
+    }
+}
+</style>
 {% endblock %}
